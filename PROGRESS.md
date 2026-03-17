@@ -1,6 +1,6 @@
 # Project Progress — ha-floorplan-card
 
-## Status: BUILD TESTING
+## Status: BUILDS PASS ✅ — Cleanup & translate remaining
 
 ## ✅ Completed
 1. **Vue source code** — All 4 custom features applied (overlay images, edge blur, smart domain detection, clickable polygons)
@@ -11,19 +11,18 @@
 6. **vite.config.card.ts** — Vite build config for viewer card
 7. **package.json** — Updated name, version, scripts (`build:card`, `build:editor`, `build:all`)
 8. **hacs.json** — HACS manifest
-9. **README.md** — Full English README with two-card setup, masonry-layout example
+9. **README.md** — Full English README
 10. **.github/workflows/release.yml** — GitHub Actions CI (builds both cards)
-
-## 🔄 In Progress
-11. **Build test** — Run `npm run build:all` to verify compilation
-12. **Fix any build errors**
+11. **TypeScript** — All errors fixed, vue-tsc passes clean
+12. **Build: viewer card** — ✅ release/ha-floorplan-card.js (167 KB)
+13. **Build: editor card** — ✅ release/ha-floorplan-editor.js (594 KB)
+14. **Git init** — Repo initialized, tagged v1.0.0
 
 ## ⬜ Remaining
-13. **Cleanup** — Remove repro.html, test_config.js, convert_demo.js, HelloWorld.vue, demo-config.yaml
-14. **Translate** — Ensure all Dutch strings in PropertiesPanel.vue are English
-15. **hacs.json update** — Add ha-floorplan-editor.js to HACS if needed (or single entry)
-16. **Git init** — Initialize repo, create initial commit
-17. **Final verification** — Test both cards in HA
+15. **Translate** — Ensure all Dutch strings in PropertiesPanel.vue and Editor are English
+16. **Cleanup** — Remove repro.html, test_config.js, convert_demo.js, HelloWorld.vue, demo-config.yaml
+17. **README update** — Add masonry-layout example YAML with both cards as tabs
+18. **Final git commit** — Clean commit with all changes
 
 ## Key Files
 - `/ha-floorplan-repo/src/HaFloorplanCard.ce.vue` — Viewer card (256 lines)
