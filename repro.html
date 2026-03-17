@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floorplan Card Repro</title>
+    <!-- Mimic HA CSS -->
+    <style>
+        body {
+            background: #111;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            font-family: sans-serif;
+        }
+
+        ha-card {
+            display: block;
+            border-radius: 4px;
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            color: var(--primary-text-color);
+            transition: all .3s ease-out;
+            position: relative;
+            background: #1c1c1c;
+        }
+
+        .card-content {
+            padding: 16px;
+        }
+
+        /* The Card under test */
+        ha-floorplan-card {
+            width: 100%;
+            display: block;
+        }
+    </style>
+    <!-- Import the module directly from dist -->
+    <script type="module" src="./dist/ha-floorplan-card.js"></script>
+</head>
+
+<body>
+
+    <h1>Card Layout Reproduction</h1>
+
+    <div style="max-width: 800px; margin: 0 auto;">
+        <ha-card header="Floorplan">
+            <div class="card-content" style="padding: 0; display: block;">
+                <!-- HA often removes padding for picture elements -->
+                <ha-floorplan-card id="test-card"></ha-floorplan-card>
+            </div>
+        </ha-card>
+    </div>
+
+    <script type="module">
+        import config from './test_config.js';
+
+        const card = document.getElementById('test-card');
+        const hassMock = {
+            states: {
+                'light.test_light': { state: 'on' },
+                'media_player.tv': { state: 'playing' }
+            },
+            callService: (d, s, p) => console.log('Service called:', d, s, p)
+        };
+
+        // Mimic how HA sets config
+        card.setConfig(config);
+        card.hass = hassMock;
+
+        // Force update just in case (though setConfig should trigger it)
+    </script>
+
+</body>
+
+</html>
