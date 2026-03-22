@@ -47,14 +47,18 @@ Upload a photo of your home, place entities on it with the editor, push to your 
 
 ## 📦 Installation
 
-### HACS (Recommended)
+> ⚠️ **Choose ONE method only — HACS _or_ Manual. You do not need both.**
+
+### Option A: HACS (Recommended)
 1. Open **HACS** in Home Assistant
 2. Go to **Frontend** → **⋮** → **Custom repositories**
 3. Add this repository URL with category **Lovelace**
 4. Search for **"HA Floorplan Card"** and install
 5. Restart Home Assistant
 
-### Manual Installation
+> Both `ha-floorplan-card.js` and `ha-floorplan-editor.js` are installed automatically by HACS. No further steps needed.
+
+### Option B: Manual Installation
 1. Download `ha-floorplan-card.js` and `ha-floorplan-editor.js` from the [latest release][release-url]
 2. Copy both files to `/config/www/`
 3. Go to **Settings** → **Dashboards** → **⋮** → **Resources**
@@ -64,9 +68,9 @@ Upload a photo of your home, place entities on it with the editor, push to your 
 
 ## 🎨 Setup
 
-### Recommended: Tabbed Layout (View + Editor)
+### Step 1 — Add the cards to a dashboard
 
-Use a tabbed card to have both the viewer and editor side by side. This example uses [`custom:tabbed-card`](https://github.com/kinghat/tabbed-card) (install via HACS):
+The recommended setup uses a tabbed layout so you have the Viewer and Editor side by side. This example uses [`custom:tabbed-card`](https://github.com/kinghat/tabbed-card) (install via HACS):
 
 ```yaml
 type: custom:tabbed-card
@@ -87,18 +91,30 @@ tabs:
       dashboard: lovelace
 ```
 
-### Editor Card Configuration
+> 💡 Save this to a dashboard first before opening the editor — the editor needs an existing floorplan card to load from and push to.
+
+### Step 2 — Configure the Editor Card
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `dashboard` | string | `lovelace` | Dashboard URL path where your floorplan card lives |
+| `dashboard` | string | `lovelace` | The URL path of the dashboard where your floorplan card lives |
 | `card_index` | number | *(auto)* | Specific card index to edit (if you have multiple floorplan cards) |
 
-The editor automatically finds and updates the `custom:ha-floorplan-card` in the specified dashboard.
+#### How to find your dashboard URL path
 
-### Quick Start
+The `dashboard` value is the **last part of your dashboard's URL**:
 
-1. Add both cards to a dashboard (use the tabbed layout above)
+| Dashboard URL in browser | `dashboard` value to use |
+|--------------------------|--------------------------|
+| `http://homeassistant.local:8123/lovelace/0` | `lovelace` |
+| `http://homeassistant.local:8123/lovelace/floorplan` | `lovelace/floorplan` |
+| `http://homeassistant.local:8123/my-custom-dashboard` | `my-custom-dashboard` |
+
+For most users the default value `lovelace` is correct.
+
+### Step 3 — Use the editor
+
+1. Open the dashboard where you added both cards
 2. Switch to the **Editor** tab
 3. Upload your floorplan image (drag & drop or click)
 4. Add entities and position them on the image
@@ -212,7 +228,6 @@ npm run build:all
 ## 🤝 Credits
 
 Based on [ha-floorplan](https://github.com/kishorviswanathan/ha-floorplan) by [@kishorviswanathan](https://github.com/kishorviswanathan), with significant additions:
-
 - **Editor as Lovelace card** — edit directly inside HA, push via WebSocket
 - **Overlay images** — decorative image layers on top of the floorplan
 - **Edge blur** — SVG Gaussian blur for softer light gradients
