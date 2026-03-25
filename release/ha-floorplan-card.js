@@ -5686,7 +5686,7 @@ const wg = {
       });
       t.value && t.value.dispatchEvent(l);
     }
-    return console.info("%c HA Floorplan Card %c v1.1.0 ", "background: #333; color: #fff", "background: #0ea5e9; color: #fff"), (s, l) => o.value ? (AA(), eA("ha-card", {
+    return console.info("%c HA Floorplan Card %c v1.1.1 ", "background: #333; color: #fff", "background: #0ea5e9; color: #fff"), (s, l) => o.value ? (AA(), eA("ha-card", {
       key: 0,
       ref_key: "cardRef",
       ref: t,
@@ -5700,7 +5700,7 @@ const wg = {
       }, null, 8, ["config", "entity-states"])
     ], 512)) : (AA(), eA("div", wg, " No Configuration Loaded "));
   }
-}), Fg = ':host{display:block!important;width:100%!important;margin:0!important;padding:0!important;box-sizing:border-box!important}*,*:before,*:after{box-sizing:border-box}ha-card{display:block!important;width:100%!important;margin:0!important;padding:0!important;background:none!important;box-shadow:none!important;border:none!important}.ha-card-wrapper{width:100%!important;display:block!important;padding:0!important;margin:0!important}.viewer-area{flex:1;background-color:transparent;display:block;position:relative;padding:0!important;margin:0!important;height:auto;width:100%!important}.empty-state{color:var(--color-text-secondary);font-size:1.2rem;padding:20px;text-align:center}.canvas-container{border-radius:0;overflow:hidden;position:relative;max-width:100%;max-height:100%}.image-wrapper{position:relative;display:block;width:100%;line-height:0;container-type:inline-size}.image-wrapper>img:first-child{width:100%;height:auto;display:block}.entity-label{position:absolute;top:50%;left:50%;background:#000000b3;color:#fff;padding:2px 4px;font-size:14px;font-size:1.5cqw;border-radius:4px;white-space:nowrap;pointer-events:none;line-height:1.2}.overlay-layer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}.overlay-layer polygon{vector-effect:non-scaling-stroke}.overlay-layer polygon[style*="pointer-events: all"],.overlay-layer polygon.clickable{pointer-events:all!important}.fp-overlay-img{position:absolute;pointer-events:none;object-fit:contain}.interactive-entity{z-index:10}.error{padding:20px;color:red}@keyframes camera-recording-blink{0%,to{opacity:1}50%{opacity:.3}}.camera-recording{animation:camera-recording-blink 2s ease-in-out infinite}', Kg = /* @__PURE__ */ Gt(Ug, [["styles", [Fg]]]);
+}), Fg = ':host{display:block!important;width:100%!important;height:auto!important;margin:0!important;padding:0!important;box-sizing:border-box!important}*,*:before,*:after{box-sizing:border-box}ha-card{display:block!important;width:100%!important;height:auto!important;overflow:visible!important;margin:0!important;padding:0!important;background:none!important;box-shadow:none!important;border:none!important}.ha-card-wrapper{width:100%!important;display:block!important;padding:0!important;margin:0!important}.viewer-area{flex:1;background-color:transparent;display:block;position:relative;padding:0!important;margin:0!important;height:auto;width:100%!important}.empty-state{color:var(--color-text-secondary);font-size:1.2rem;padding:20px;text-align:center}.canvas-container{border-radius:0;overflow:hidden;position:relative;max-width:100%;height:auto}.image-wrapper{position:relative;display:block;width:100%;line-height:0;container-type:inline-size}.image-wrapper>img:first-child{width:100%;height:auto;display:block;object-fit:contain;aspect-ratio:auto}.entity-label{position:absolute;top:50%;left:50%;background:#000000b3;color:#fff;padding:2px 4px;font-size:14px;font-size:1.5cqw;border-radius:4px;white-space:nowrap;pointer-events:none;line-height:1.2}.overlay-layer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}.overlay-layer polygon{vector-effect:non-scaling-stroke}.overlay-layer polygon[style*="pointer-events: all"],.overlay-layer polygon.clickable{pointer-events:all!important}.fp-overlay-img{position:absolute;pointer-events:none;object-fit:contain}.interactive-entity{z-index:10}.error{padding:20px;color:red}@keyframes camera-recording-blink{0%,to{opacity:1}50%{opacity:.3}}.camera-recording{animation:camera-recording-blink 2s ease-in-out infinite}', Kg = /* @__PURE__ */ Gt(Ug, [["styles", [Fg]]]);
 var Og = Object.create, ha = Object.defineProperty, Ng = Object.getOwnPropertyDescriptor, lr = Object.getOwnPropertyNames, Tg = Object.getPrototypeOf, Mg = Object.prototype.hasOwnProperty, Rg = (A, e) => function() {
   return A && (e = (0, A[lr(A)[0]])(A = 0)), e;
 }, Vg = (A, e) => function() {
@@ -12499,7 +12499,7 @@ const Gh = { class: "properties-panel glass-panel" }, Wh = { class: "panel-conte
     function J() {
       e.selectedEntityId && e.updateEntity(e.selectedEntityId, { points: [] });
     }
-    const B = "v1.1.0";
+    const B = "v1.1.1";
     return (m, g) => (AA(), eA("div", Gh, [
       g[47] || (g[47] = v("div", { class: "panel-header" }, [
         v("h2", null, "Properties")
@@ -12909,7 +12909,7 @@ const Gh = { class: "properties-panel glass-panel" }, Wh = { class: "panel-conte
       o.hass && f();
     }), Kt(() => o.hass, (d, C) => {
       d && !C && f();
-    }), console.info("%c HA Floorplan Editor %c v1.1.0 ", "background: #333; color: #fff", "background: #10b981; color: #fff"), (d, C) => (AA(), eA("ha-card", OQ, [
+    }), console.info("%c HA Floorplan Editor %c v1.1.1 ", "background: #333; color: #fff", "background: #10b981; color: #fff"), (d, C) => (AA(), eA("ha-card", OQ, [
       v("div", NQ, [
         C[0] || (C[0] = v("div", { class: "toolbar-left" }, [
           v("span", { class: "toolbar-title" }, "Floorplan Editor")
@@ -12961,7 +12961,7 @@ class XQ extends _Q {
 }
 customElements.define("ha-floorplan-editor", XQ);
 console.info(
-  "%c HA FLOORPLAN %c Card + Editor %c v1.1.0 ",
+  "%c HA FLOORPLAN %c Card + Editor %c v1.1.1 ",
   "color: white; background: #202020; font-weight: 700;",
   "color: white; background: #555; font-weight: 700;",
   "color: #202020; background: #91eb61; font-weight: 700;"

@@ -142,6 +142,7 @@ console.info(`%c HA Floorplan Card %c ${__APP_VERSION__} `, 'background: #333; c
 :host {
     display: block !important;
     width: 100% !important;
+    height: auto !important;
     margin: 0 !important;
     padding: 0 !important;
     box-sizing: border-box !important;
@@ -156,6 +157,8 @@ console.info(`%c HA Floorplan Card %c ${__APP_VERSION__} `, 'background: #333; c
 ha-card {
     display: block !important;
     width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
     margin: 0 !important;
     padding: 0 !important;
     background: none !important;
@@ -196,7 +199,8 @@ ha-card {
     overflow: hidden;
     position: relative;
     max-width: 100%;
-    max-height: 100%;
+    /* max-height removed: it caused squishing when HA layout constrains card height */
+    height: auto;
 }
 
 .image-wrapper {
@@ -211,6 +215,9 @@ ha-card {
     width: 100%;
     height: auto;
     display: block;
+    object-fit: contain;
+    /* Preserve the intrinsic aspect ratio even under height constraints */
+    aspect-ratio: auto;
 }
 
 .entity-label {
