@@ -56,15 +56,15 @@ Upload a photo of your home, place entities on it with the editor, push to your 
 4. Search for **"HA Floorplan Card"** and install
 5. Restart Home Assistant
 
-> Both `ha-floorplan-card.js` and `ha-floorplan-editor.js` are installed automatically by HACS. No further steps needed.
+> HACS installs `ha-floorplan-card.js` which includes both the viewer and editor — no further steps needed.
 
 ### Option B: Manual Installation
-1. Download `ha-floorplan-card.js` and `ha-floorplan-editor.js` from the [latest release][release-url]
-2. Copy both files to `/config/www/`
+1. Download `ha-floorplan-card.js` from the [latest release][release-url]
+2. Copy the file to `/config/www/`
 3. Go to **Settings** → **Dashboards** → **⋮** → **Resources**
-4. Add two resources (both as **JavaScript Module**):
-   - `/local/ha-floorplan-card.js`
-   - `/local/ha-floorplan-editor.js`
+4. Add `/local/ha-floorplan-card.js` as a **JavaScript Module**
+
+> This single file contains both the viewer card and the editor card.
 
 ## 🎨 Setup
 
@@ -179,14 +179,12 @@ npm install
 # Run the standalone editor in dev mode (with Viewer/Editor tabs)
 npm run dev
 
-# Build the HA viewer card → release/ha-floorplan-card.js
-npm run build:card
+# Build the combined HA card (viewer + editor) → release/ha-floorplan-card.js
+npm run build:combined
 
-# Build the HA editor card → release/ha-floorplan-editor.js
-npm run build:editor
-
-# Build both cards
-npm run build:all
+# Build cards separately (for development)
+npm run build:card     # viewer only → release/ha-floorplan-card.js
+npm run build:editor   # editor only → release/ha-floorplan-editor.js
 ```
 
 ## 📄 Configuration Reference

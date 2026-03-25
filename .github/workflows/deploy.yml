@@ -14,15 +14,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install and Build (Editor)
+      - name: Install and Build (Standalone App)
         run: |
           npm install
           npm run build
-          # The editor is built to dist/
+          # The standalone app (with Viewer/Editor tabs) is built to dist/
 
-      - name: Build Card
-        run: npm run build:card
-        # This builds the card to release/ (for checking into repo), not dist/
+      - name: Build Combined Card + Editor
+        run: |
+          npm run build:combined
+          # Copy the combined JS into dist/demo/ so the demo page uses it too
+          mkdir -p dist/demo
+          cp release/ha-floorplan-card.js dist/demo/
+          # Also copy the demo HTML if it exists in docs/demo/
+          if [ -f docs/demo/index.html ]; then
+            cp docs/demo/index.html dist/demo/
+          fi
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

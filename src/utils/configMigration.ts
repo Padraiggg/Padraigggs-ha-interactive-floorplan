@@ -69,6 +69,22 @@ function migrateEntityColors(entity: any): any {
  * @returns The migrated configuration
  */
 export function migrateConfig(config: any): FloorplanConfig {
+    // Migrate imageUrl -> imageBase64 if only imageUrl is set
+    if (config.imageUrl && !config.imageBase64) {
+        config.imageBase64 = '';
+        // Keep imageUrl as-is — the component will use it as fallback
+    }
+
+    // Migrate overlay images: url -> src
+    if (config.overlayImages && Array.isArray(config.overlayImages)) {
+        config.overlayImages = config.overlayImages.map((overlay: any) => {
+            if (overlay.url && !overlay.src) {
+                overlay.src = overlay.url;
+            }
+            return overlay;
+        });
+    }
+
     // Ensure entities array exists
     if (!config.entities || !Array.isArray(config.entities)) {
         return config as FloorplanConfig;

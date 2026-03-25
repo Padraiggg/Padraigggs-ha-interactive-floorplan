@@ -49,6 +49,7 @@ export interface EntityConfig {
 
 export interface OverlayImage {
   src: string; // URL or base64 data URI
+  url?: string; // Alternative to src (legacy configs use this)
   x: number; // percentage 0-100
   y: number; // percentage 0-100
   width: number; // percentage
@@ -60,7 +61,8 @@ export interface OverlayImage {
 export interface FloorplanConfig {
   id: string;
   name: string;
-  imageBase64: string; // Data URI
+  imageBase64: string; // Data URI or empty string
+  imageUrl?: string; // URL path (alternative to imageBase64, e.g. /local/floorplan.png)
   entities: EntityConfig[];
   overlayImages?: OverlayImage[];
 }

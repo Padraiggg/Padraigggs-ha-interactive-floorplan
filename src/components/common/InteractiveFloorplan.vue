@@ -12,7 +12,8 @@ const emit = defineEmits<{
     (e: 'entity-long-press', entityId: string): void
 }>();
 
-const hasImage = computed(() => !!props.config.imageBase64);
+const imageSrc = computed(() => props.config.imageBase64 || props.config.imageUrl || '');
+const hasImage = computed(() => !!imageSrc.value);
 
 // Long Press Logic
 const longPressTimer = ref<number | null>(null);
@@ -177,7 +178,7 @@ function isRecording(entity: any) {
 
         <div v-else class="canvas-container">
             <div class="image-wrapper">
-                <img :src="props.config.imageBase64" alt="Floorplan Base" draggable="false" />
+                <img :src="imageSrc" alt="Floorplan Base" draggable="false" />
 
                 <svg class="overlay-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
                     <defs>
@@ -223,7 +224,7 @@ function isRecording(entity: any) {
 
                 <!-- Overlay images (e.g. decorative plants placed on top of the floorplan) -->
                 <img v-for="(overlay, idx) in (props.config.overlayImages || [])" :key="'overlay-' + idx"
-                    :src="(overlay as any).url || overlay.src" class="fp-overlay-img"
+                    :src="overlay.url || overlay.src" class="fp-overlay-img"
                     :style="{
                         left: overlay.x + '%',
                         top: overlay.y + '%',

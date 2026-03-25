@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build -c vite.config.combined.ts",
+    "build": "vue-tsc -b && vite build",
     "build:card": "vue-tsc -b && vite build -c vite.config.card.ts",
     "build:editor": "vue-tsc -b && vite build -c vite.config.editor.ts",
     "build:combined": "vue-tsc -b && vite build -c vite.config.combined.ts",

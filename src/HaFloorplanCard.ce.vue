@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import InteractiveFloorplan from './components/common/InteractiveFloorplan.vue';
 import type { FloorplanConfig, EntityState } from './types/floorplan';
+import { migrateConfig } from './utils/configMigration';
 
 const props = defineProps<{
     config?: FloorplanConfig | string,
@@ -12,7 +13,7 @@ const cardRef = ref<HTMLElement | null>(null);
 
 const parsedConfig = computed((): FloorplanConfig | null => {
     if (!props.config) return null;
-    let conf: FloorplanConfig | null = null;
+    let conf: any = null;
     if (typeof props.config === 'string') {
         try {
             conf = JSON.parse(props.config);
@@ -21,8 +22,11 @@ const parsedConfig = computed((): FloorplanConfig | null => {
             return null;
         }
     } else {
-        conf = props.config as FloorplanConfig;
+        conf = { ...props.config };
     }
+
+    // Run config migration (imageUrl→imageBase64, overlay url→src, old colors)
+    conf = migrateConfig(conf);
 
     // Ensure imageBase64 is clean (strip newlines/spaces from YAML folding)
     if (conf && conf.imageBase64) {
