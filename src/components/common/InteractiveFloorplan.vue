@@ -223,7 +223,7 @@ function isRecording(entity: any) {
 
                 <!-- Overlay images (e.g. decorative plants placed on top of the floorplan) -->
                 <img v-for="(overlay, idx) in (props.config.overlayImages || [])" :key="'overlay-' + idx"
-                    :src="overlay.src" class="fp-overlay-img"
+                    :src="(overlay as any).url || overlay.src" class="fp-overlay-img"
                     :style="{
                         left: overlay.x + '%',
                         top: overlay.y + '%',
