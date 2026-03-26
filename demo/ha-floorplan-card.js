@@ -5686,7 +5686,7 @@ const wg = {
       });
       t.value && t.value.dispatchEvent(l);
     }
-    return console.info("%c HA Floorplan Card %c v1.1.2 ", "background: #333; color: #fff", "background: #0ea5e9; color: #fff"), (s, l) => o.value ? (AA(), eA("ha-card", {
+    return console.info("%c HA Floorplan Card %c v1.1.3 ", "background: #333; color: #fff", "background: #0ea5e9; color: #fff"), (s, l) => o.value ? (AA(), eA("ha-card", {
       key: 0,
       ref_key: "cardRef",
       ref: t,
@@ -12499,7 +12499,7 @@ const Gh = { class: "properties-panel glass-panel" }, Wh = { class: "panel-conte
     function J() {
       e.selectedEntityId && e.updateEntity(e.selectedEntityId, { points: [] });
     }
-    const B = "v1.1.2";
+    const B = "v1.1.3";
     return (m, g) => (AA(), eA("div", Gh, [
       g[47] || (g[47] = v("div", { class: "panel-header" }, [
         v("h2", null, "Properties")
@@ -12909,7 +12909,7 @@ const Gh = { class: "properties-panel glass-panel" }, Wh = { class: "panel-conte
       o.hass && f();
     }), Kt(() => o.hass, (d, C) => {
       d && !C && f();
-    }), console.info("%c HA Floorplan Editor %c v1.1.2 ", "background: #333; color: #fff", "background: #10b981; color: #fff"), (d, C) => (AA(), eA("ha-card", OQ, [
+    }), console.info("%c HA Floorplan Editor %c v1.1.3 ", "background: #333; color: #fff", "background: #10b981; color: #fff"), (d, C) => (AA(), eA("ha-card", OQ, [
       v("div", NQ, [
         C[0] || (C[0] = v("div", { class: "toolbar-left" }, [
           v("span", { class: "toolbar-title" }, "Floorplan Editor")
@@ -12948,8 +12948,29 @@ class WQ extends GQ {
   setConfig(e) {
     e.floorplan_config ? this.config = e.floorplan_config : e.config ? this.config = e.config : this.config = e;
   }
+  static getConfigElement() {
+    return document.createElement("ha-floorplan-editor");
+  }
+  static getStubConfig() {
+    return {
+      type: "custom:ha-floorplan-card",
+      entities: [],
+      imageUrl: "",
+      overlayImages: []
+    };
+  }
+  getCardSize() {
+    return 6;
+  }
 }
 customElements.define("ha-floorplan-card", WQ);
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: "ha-floorplan-card",
+  name: "HA Interactive Floorplan",
+  description: "Interactive floorplan with clickable lights, cameras, and climate controls",
+  preview: !0
+});
 const _Q = /* @__PURE__ */ da(jQ);
 class XQ extends _Q {
   setConfig(e) {
@@ -12961,7 +12982,7 @@ class XQ extends _Q {
 }
 customElements.define("ha-floorplan-editor", XQ);
 console.info(
-  "%c HA FLOORPLAN %c Card + Editor %c v1.1.2 ",
+  "%c HA FLOORPLAN %c Card + Editor %c v1.1.3 ",
   "color: white; background: #202020; font-weight: 700;",
   "color: white; background: #555; font-weight: 700;",
   "color: #202020; background: #91eb61; font-weight: 700;"
