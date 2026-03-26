@@ -22,9 +22,35 @@ class HaFloorplanCardElementWrapped extends HaFloorplanCardElement {
             this.config = config;
         }
     }
+
+    static getConfigElement() {
+        return document.createElement('ha-floorplan-editor');
+    }
+
+    static getStubConfig() {
+        return {
+            type: 'custom:ha-floorplan-card',
+            entities: [],
+            imageUrl: '',
+            overlayImages: []
+        };
+    }
+
+    getCardSize() {
+        return 6;
+    }
 }
 
 customElements.define('ha-floorplan-card', HaFloorplanCardElementWrapped as any);
+
+// --- Register in HA card picker ---
+(window as any).customCards = (window as any).customCards || [];
+(window as any).customCards.push({
+    type: 'ha-floorplan-card',
+    name: 'HA Interactive Floorplan',
+    description: 'Interactive floorplan with clickable lights, cameras, and climate controls',
+    preview: true
+});
 
 // --- Editor registration ---
 import HaFloorplanEditor from './HaFloorplanEditor.ce.vue';
