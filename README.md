@@ -245,6 +245,7 @@ If you enjoy this project and want to support further development, any contribut
 
 [![PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal)](https://paypal.me/PatrickWolvers)
 [![Patreon](https://img.shields.io/badge/Support-Patreon-orange.svg?logo=patreon)](https://patreon.com/Padraiggg)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-yellow.svg?logo=buy-me-a-coffee)](https://buymeacoffee.com/padraiggg)
 
 [hacs-badge]: https://img.shields.io/badge/HACS-Custom-orange.svg
 [hacs-url]: https://hacs.xyz
