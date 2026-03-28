@@ -27,7 +27,12 @@ const isLoading = ref(false);
 const isPushing = ref(false);
 
 // Dashboard name from card config (user-configurable)
-const dashboardId = computed(() => props.config?.dashboard || 'lovelace');
+// Strip "dashboard-xxx/" prefix if user accidentally pastes the full HA browser URL path
+// e.g. "dashboard-bernd/floor" → "floor", "lovelace" → "lovelace", "floor" → "floor"
+const dashboardId = computed(() => {
+    const raw = props.config?.dashboard || 'lovelace';
+    return raw.replace(/^dashboard-[^/]+\//, '');
+});
 const cardIndex = computed(() => props.config?.card_index ?? null);
 
 function toggleDrawMode() {

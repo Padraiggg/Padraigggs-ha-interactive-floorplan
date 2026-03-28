@@ -5686,7 +5686,7 @@ const wg = {
       });
       t.value && t.value.dispatchEvent(l);
     }
-    return console.info("%c HA Floorplan Card %c v1.1.3 ", "background: #333; color: #fff", "background: #0ea5e9; color: #fff"), (s, l) => o.value ? (AA(), eA("ha-card", {
+    return console.info("%c HA Floorplan Card %c v1.1.4 ", "background: #333; color: #fff", "background: #0ea5e9; color: #fff"), (s, l) => o.value ? (AA(), eA("ha-card", {
       key: 0,
       ref_key: "cardRef",
       ref: t,
@@ -12499,7 +12499,7 @@ const Gh = { class: "properties-panel glass-panel" }, Wh = { class: "panel-conte
     function J() {
       e.selectedEntityId && e.updateEntity(e.selectedEntityId, { points: [] });
     }
-    const B = "v1.1.3";
+    const B = "v1.1.4";
     return (m, g) => (AA(), eA("div", Gh, [
       g[47] || (g[47] = v("div", { class: "panel-header" }, [
         v("h2", null, "Properties")
@@ -12810,7 +12810,7 @@ const Gh = { class: "properties-panel glass-panel" }, Wh = { class: "panel-conte
   setup(A) {
     const e = tC();
     Pt(e);
-    const t = Hn(), o = A, n = gA(null), i = gA(""), r = gA(""), s = gA(!1), l = gA(!1), a = FA(() => o.config?.dashboard || "lovelace"), S = FA(() => o.config?.card_index ?? null);
+    const t = Hn(), o = A, n = gA(null), i = gA(""), r = gA(""), s = gA(!1), l = gA(!1), a = FA(() => (o.config?.dashboard || "lovelace").replace(/^dashboard-[^/]+\//, "")), S = FA(() => o.config?.card_index ?? null);
     function u() {
       n.value && (n.value.isDrawing = !n.value.isDrawing);
     }
@@ -12909,7 +12909,7 @@ const Gh = { class: "properties-panel glass-panel" }, Wh = { class: "panel-conte
       o.hass && f();
     }), Kt(() => o.hass, (d, C) => {
       d && !C && f();
-    }), console.info("%c HA Floorplan Editor %c v1.1.3 ", "background: #333; color: #fff", "background: #10b981; color: #fff"), (d, C) => (AA(), eA("ha-card", OQ, [
+    }), console.info("%c HA Floorplan Editor %c v1.1.4 ", "background: #333; color: #fff", "background: #10b981; color: #fff"), (d, C) => (AA(), eA("ha-card", OQ, [
       v("div", NQ, [
         C[0] || (C[0] = v("div", { class: "toolbar-left" }, [
           v("span", { class: "toolbar-title" }, "Floorplan Editor")
@@ -12986,7 +12986,7 @@ class XQ extends _Q {
 }
 customElements.define("ha-floorplan-editor", XQ);
 console.info(
-  "%c HA FLOORPLAN %c Card + Editor %c v1.1.3 ",
+  "%c HA FLOORPLAN %c Card + Editor %c v1.1.4 ",
   "color: white; background: #202020; font-weight: 700;",
   "color: white; background: #555; font-weight: 700;",
   "color: #202020; background: #91eb61; font-weight: 700;"
