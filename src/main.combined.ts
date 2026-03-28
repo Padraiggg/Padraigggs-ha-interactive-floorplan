@@ -23,6 +23,12 @@ class HaFloorplanCardElementWrapped extends HaFloorplanCardElement {
         }
     }
 
+    // HA calls setHass() to pass live entity states to the card
+    setHass(hass: any) {
+        // @ts-ignore
+        this.hass = hass;
+    }
+
     static getConfigElement() {
         return document.createElement('ha-floorplan-editor');
     }

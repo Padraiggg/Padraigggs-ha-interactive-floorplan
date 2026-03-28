@@ -29,7 +29,8 @@ function migrateEntityColors(entity: any): any {
         return entity;
     }
 
-    const style = entity.style;
+    // Work on a copy of style to avoid mutating frozen objects
+    const style = { ...entity.style };
 
     // Check if entity is a camera type
     if (entity.type === 'camera') {
@@ -60,7 +61,7 @@ function migrateEntityColors(entity: any): any {
         }
     }
 
-    return entity;
+    return { ...entity, style };
 }
 
 /**
@@ -69,6 +70,10 @@ function migrateEntityColors(entity: any): any {
  * @returns The migrated configuration
  */
 export function migrateConfig(config: any): FloorplanConfig {
+    // Always work on a shallow copy — the incoming config object may be frozen/sealed
+    // (HA 2026.3+ freezes config objects passed to custom cards via setConfig)
+    config = { ...config };
+
     // Migrate imageUrl -> imageBase64 if only imageUrl is set
     if (config.imageUrl && !config.imageBase64) {
         config.imageBase64 = '';
@@ -79,7 +84,8 @@ export function migrateConfig(config: any): FloorplanConfig {
     if (config.overlayImages && Array.isArray(config.overlayImages)) {
         config.overlayImages = config.overlayImages.map((overlay: any) => {
             if (overlay.url && !overlay.src) {
-                overlay.src = overlay.url;
+                // Make a copy — overlay object may also be frozen
+                return { ...overlay, src: overlay.url };
             }
             return overlay;
         });
@@ -90,13 +96,11 @@ export function migrateConfig(config: any): FloorplanConfig {
         return config as FloorplanConfig;
     }
 
-    // Migrate each entity
-    config.entities = config.entities.map((entity: any) => migrateEntityColors(entity));
+    // Migrate each entity — also copy to avoid mutating frozen objects
+    config.entities = config.entities.map((entity: any) => migrateEntityColors({ ...entity, style: entity.style ? { ...entity.style } : undefined }));
 
     return config as FloorplanConfig;
-}
-
-/**
+}/**
  * Checks if a configuration needs migration
  * @param config The configuration to check
  * @returns True if migration is needed
