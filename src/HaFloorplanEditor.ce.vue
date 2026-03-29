@@ -41,6 +41,50 @@ function toggleDrawMode() {
     }
 }
 
+// Recursively find a ha-floorplan-card inside any card (handles tabbed-card, grid-card, vertical-stack, etc.)
+function findFloorplanConfig(card: any): any | null {
+    if (!card) return null;
+    if (card.type === 'custom:ha-floorplan-card' && card.config) return card.config;
+    // tabbed-card: card.tabs[].card
+    if (card.tabs && Array.isArray(card.tabs)) {
+        for (const tab of card.tabs) {
+            const found = findFloorplanConfig(tab.card);
+            if (found) return found;
+        }
+    }
+    // vertical-stack, horizontal-stack: card.cards[]
+    if (card.cards && Array.isArray(card.cards)) {
+        for (const child of card.cards) {
+            const found = findFloorplanConfig(child);
+            if (found) return found;
+        }
+    }
+    // grid-card: card.cards[]
+    // (already covered above)
+    return null;
+}
+
+// Recursively patch a ha-floorplan-card config inside any card tree.
+// Returns true if patched.
+function patchFloorplanConfig(card: any, newConfig: any): boolean {
+    if (!card) return false;
+    if (card.type === 'custom:ha-floorplan-card' && card.config) {
+        card.config = newConfig;
+        return true;
+    }
+    if (card.tabs && Array.isArray(card.tabs)) {
+        for (const tab of card.tabs) {
+            if (patchFloorplanConfig(tab.card, newConfig)) return true;
+        }
+    }
+    if (card.cards && Array.isArray(card.cards)) {
+        for (const child of card.cards) {
+            if (patchFloorplanConfig(child, newConfig)) return true;
+        }
+    }
+    return false;
+}
+
 // --- Push to HA via hass.callWS() ---
 
 async function loadFromHA() {
@@ -59,36 +103,34 @@ async function loadFromHA() {
             url_path: dashboardId.value === 'lovelace' ? null : dashboardId.value,
         });
 
-        // Find the ha-floorplan-card in the dashboard config
+        // Find the ha-floorplan-card in the dashboard config (searches recursively through nested cards)
         let foundConfig: FloorplanConfig | null = null;
         let foundViewIndex = -1;
         let foundCardIndex = -1;
 
         if (result && result.views) {
+            outer:
             for (let vi = 0; vi < result.views.length; vi++) {
                 const view = result.views[vi];
                 const cards = view.cards || [];
                 for (let ci = 0; ci < cards.length; ci++) {
-                    const card = cards[ci];
-                    if (card.type === 'custom:ha-floorplan-card' && card.config) {
-                        // If card_index specified, match on that
+                    const config = findFloorplanConfig(cards[ci]);
+                    if (config) {
                         if (cardIndex.value !== null) {
                             if (ci === cardIndex.value && vi === 0) {
-                                foundConfig = card.config;
+                                foundConfig = config;
                                 foundViewIndex = vi;
                                 foundCardIndex = ci;
-                                break;
+                                break outer;
                             }
                         } else {
-                            // Take the first one found
-                            foundConfig = card.config;
+                            foundConfig = config;
                             foundViewIndex = vi;
                             foundCardIndex = ci;
-                            break;
+                            break outer;
                         }
                     }
                 }
-                if (foundConfig) break;
             }
         }
 
@@ -139,34 +181,20 @@ async function pushToHA() {
             return;
         }
 
-        // Find the ha-floorplan-card to replace
+        // Find and patch the ha-floorplan-card (searches recursively through nested cards)
         let found = false;
+        const newConfig = JSON.parse(JSON.stringify(store.config));
+        outer:
         for (let vi = 0; vi < dashConfig.views.length; vi++) {
             const view = dashConfig.views[vi];
             const cards = view.cards || [];
             for (let ci = 0; ci < cards.length; ci++) {
-                const card = cards[ci];
-                if (card.type === 'custom:ha-floorplan-card' && card.config) {
-                    if (cardIndex.value !== null) {
-                        if (ci === cardIndex.value && vi === 0) {
-                            cards[ci] = {
-                                type: 'custom:ha-floorplan-card',
-                                config: JSON.parse(JSON.stringify(store.config))
-                            };
-                            found = true;
-                            break;
-                        }
-                    } else {
-                        cards[ci] = {
-                            type: 'custom:ha-floorplan-card',
-                            config: JSON.parse(JSON.stringify(store.config))
-                        };
-                        found = true;
-                        break;
-                    }
+                if (cardIndex.value !== null && (ci !== cardIndex.value || vi !== 0)) continue;
+                if (patchFloorplanConfig(cards[ci], newConfig)) {
+                    found = true;
+                    break outer;
                 }
             }
-            if (found) break;
         }
 
         if (!found) {
