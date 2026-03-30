@@ -41,6 +41,24 @@ function toggleDrawMode() {
     }
 }
 
+// Collect all top-level cards from a view, supporting both classic (view.cards) and sections-based (view.sections[].cards[]) layouts.
+function getViewCards(view: any): any[] {
+    const cards: any[] = [];
+    // Classic view: cards are directly on view.cards
+    if (view.cards && Array.isArray(view.cards)) {
+        cards.push(...view.cards);
+    }
+    // Sections-based view (HA 2024.x+): cards are inside view.sections[].cards[]
+    if (view.sections && Array.isArray(view.sections)) {
+        for (const section of view.sections) {
+            if (section.cards && Array.isArray(section.cards)) {
+                cards.push(...section.cards);
+            }
+        }
+    }
+    return cards;
+}
+
 // Recursively find a ha-floorplan-card inside any card (handles tabbed-card, grid-card, vertical-stack, etc.)
 function findFloorplanConfig(card: any): any | null {
     if (!card) return null;
@@ -112,7 +130,7 @@ async function loadFromHA() {
             outer:
             for (let vi = 0; vi < result.views.length; vi++) {
                 const view = result.views[vi];
-                const cards = view.cards || [];
+                const cards = getViewCards(view);
                 for (let ci = 0; ci < cards.length; ci++) {
                     const config = findFloorplanConfig(cards[ci]);
                     if (config) {
@@ -187,7 +205,7 @@ async function pushToHA() {
         outer:
         for (let vi = 0; vi < dashConfig.views.length; vi++) {
             const view = dashConfig.views[vi];
-            const cards = view.cards || [];
+            const cards = getViewCards(view);
             for (let ci = 0; ci < cards.length; ci++) {
                 if (cardIndex.value !== null && (ci !== cardIndex.value || vi !== 0)) continue;
                 if (patchFloorplanConfig(cards[ci], newConfig)) {
