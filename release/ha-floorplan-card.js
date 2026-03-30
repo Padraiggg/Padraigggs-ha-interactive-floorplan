@@ -5686,7 +5686,7 @@ const wg = {
       });
       t.value && t.value.dispatchEvent(l);
     }
-    return console.info("%c HA Floorplan Card %c v1.1.5-1-gee1d0a2 ", "background: #333; color: #fff", "background: #0ea5e9; color: #fff"), (s, l) => o.value ? (AA(), eA("ha-card", {
+    return console.info("%c HA Floorplan Card %c v1.1.6 ", "background: #333; color: #fff", "background: #0ea5e9; color: #fff"), (s, l) => o.value ? (AA(), eA("ha-card", {
       key: 0,
       ref_key: "cardRef",
       ref: t,
@@ -12499,7 +12499,7 @@ const Gh = { class: "properties-panel glass-panel" }, Wh = { class: "panel-conte
     function m() {
       e.selectedEntityId && e.updateEntity(e.selectedEntityId, { points: [] });
     }
-    const I = "v1.1.5-1-gee1d0a2";
+    const I = "v1.1.6";
     return (y, g) => (AA(), eA("div", Gh, [
       g[47] || (g[47] = b("div", { class: "panel-header" }, [
         b("h2", null, "Properties")
@@ -12925,7 +12925,7 @@ const Gh = { class: "properties-panel glass-panel" }, Wh = { class: "panel-conte
       o.hass && p();
     }), Kt(() => o.hass, (C, m) => {
       C && !m && p();
-    }), console.info("%c HA Floorplan Editor %c v1.1.5-1-gee1d0a2 ", "background: #333; color: #fff", "background: #10b981; color: #fff"), (C, m) => (AA(), eA("ha-card", OQ, [
+    }), console.info("%c HA Floorplan Editor %c v1.1.6 ", "background: #333; color: #fff", "background: #10b981; color: #fff"), (C, m) => (AA(), eA("ha-card", OQ, [
       b("div", NQ, [
         m[0] || (m[0] = b("div", { class: "toolbar-left" }, [
           b("span", { class: "toolbar-title" }, "Floorplan Editor")
@@ -13002,7 +13002,7 @@ class XQ extends _Q {
 }
 customElements.define("ha-floorplan-editor", XQ);
 console.info(
-  "%c HA FLOORPLAN %c Card + Editor %c v1.1.5-1-gee1d0a2 ",
+  "%c HA FLOORPLAN %c Card + Editor %c v1.1.6 ",
   "color: white; background: #202020; font-weight: 700;",
   "color: white; background: #555; font-weight: 700;",
   "color: #202020; background: #91eb61; font-weight: 700;"
