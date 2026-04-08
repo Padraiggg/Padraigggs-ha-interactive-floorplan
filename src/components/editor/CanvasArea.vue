@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useFloorplanStore } from '../../stores/floorplan';
-import { computed, ref } from 'vue';
+import { computed, ref, onBeforeUnmount } from 'vue';
 import EntityOverlay from './EntityOverlay.vue';
 
 const store = useFloorplanStore();
 const fileInput = ref<HTMLInputElement | null>(null);
 const isDrawing = ref(false);
 const zoomScale = ref(1);
+const imageWrapperRef = ref<HTMLElement | null>(null);
 
 const hasImage = computed(() => !!store.config.imageBase64);
 
@@ -24,8 +25,8 @@ function zoomOut() {
 
 function onCanvasClick(event: MouseEvent) {
   if (isDrawing.value && store.selectedEntityId) {
-    // Add point
-    const container = document.querySelector('.image-wrapper');
+    // Add point — use template ref (document.querySelector fails inside Shadow DOM)
+    const container = imageWrapperRef.value;
     if (!container) return;
 
     const rect = container.getBoundingClientRect();
@@ -94,7 +95,7 @@ function onPointMouseDown(index: number, event: MouseEvent) {
 function onPointMouseMove(event: MouseEvent) {
   if (draggingKey.value === null || !store.selectedEntity) return;
 
-  const container = document.querySelector('.image-wrapper');
+  const container = imageWrapperRef.value;
   if (!container) return;
 
   const rect = container.getBoundingClientRect();
@@ -126,7 +127,7 @@ function onPointTouchMove(event: TouchEvent) {
   if (draggingKey.value === null || !store.selectedEntity) return;
   event.preventDefault(); // Stop scrolling
 
-  const container = document.querySelector('.image-wrapper');
+  const container = imageWrapperRef.value;
   if (!container) return;
 
   const touch = event.touches[0];
@@ -148,6 +149,14 @@ function onPointTouchEnd() {
   window.removeEventListener('touchmove', onPointTouchMove);
   window.removeEventListener('touchend', onPointTouchEnd);
 }
+
+// Cleanup window listeners on unmount to prevent memory leaks
+onBeforeUnmount(() => {
+  window.removeEventListener('mousemove', onPointMouseMove);
+  window.removeEventListener('mouseup', onPointMouseUp);
+  window.removeEventListener('touchmove', onPointTouchMove);
+  window.removeEventListener('touchend', onPointTouchEnd);
+});
 </script>
 
 <template>
@@ -173,7 +182,7 @@ function onPointTouchEnd() {
       </div>
 
       <div class="scroll-frame">
-        <div class="image-wrapper" @click="onCanvasClick"
+        <div ref="imageWrapperRef" class="image-wrapper" @click="onCanvasClick"
           :style="{ transform: `scale(${zoomScale})`, transformOrigin: 'top left' }">
           <img :src="store.config.imageBase64" alt="Floorplan Base" draggable="false" />
 

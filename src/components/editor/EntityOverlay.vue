@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onBeforeUnmount } from 'vue';
 import type { EntityConfig } from '../../types/floorplan';
 import { useFloorplanStore } from '../../stores/floorplan';
 
@@ -17,6 +17,10 @@ const dragStart = ref({ x: 0, y: 0 });
 const isLabelDragging = ref(false);
 const labelDragStart = ref({ x: 0, y: 0 });
 
+// Cached container reference for drag operations
+// (document.querySelector fails inside Shadow DOM; we cache from event.currentTarget at drag start)
+let dragContainer: HTMLElement | null = null;
+
 // We need to calculate % movement based on parent size. 
 // Since we don't have easy access to parent ref here without inject/props, 
 // we'll rely on event.target.offsetParent to get dimensions.
@@ -28,6 +32,9 @@ function onMouseDown(event: MouseEvent) {
   isDragging.value = true;
   dragStart.value = { x: event.clientX, y: event.clientY };
 
+  // Cache container from DOM traversal (works inside Shadow DOM)
+  dragContainer = (event.currentTarget as HTMLElement).closest('.image-wrapper') as HTMLElement | null;
+
   window.addEventListener('mousemove', onMouseMove);
   window.addEventListener('mouseup', onMouseUp);
 }
@@ -38,11 +45,7 @@ function onMouseMove(event: MouseEvent) {
   const dx = event.clientX - dragStart.value.x;
   const dy = event.clientY - dragStart.value.y;
 
-  // Calculate percentage change
-  // We need the container dimensions. 
-  // We can get them from the store or DOM. 
-  // Let's assume the entity's parent is the .image-wrapper
-  const container = document.querySelector('.image-wrapper');
+  const container = dragContainer;
   if (!container) return;
 
   const rect = container.getBoundingClientRect();
@@ -69,8 +72,6 @@ function onMouseUp() {
 // Touch Logic
 function onTouchStart(event: TouchEvent) {
   event.stopPropagation();
-  // Prevent scrolling if we are starting a drag
-  // event.preventDefault(); 
 
   store.selectedEntityId = props.entity.id;
 
@@ -79,6 +80,9 @@ function onTouchStart(event: TouchEvent) {
 
   isDragging.value = true;
   dragStart.value = { x: touch.clientX, y: touch.clientY };
+
+  // Cache container from DOM traversal (works inside Shadow DOM)
+  dragContainer = (event.currentTarget as HTMLElement).closest('.image-wrapper') as HTMLElement | null;
 
   window.addEventListener('touchmove', onTouchMove, { passive: false });
   window.addEventListener('touchend', onTouchEnd);
@@ -94,7 +98,7 @@ function onTouchMove(event: TouchEvent) {
   const dx = touch.clientX - dragStart.value.x;
   const dy = touch.clientY - dragStart.value.y;
 
-  const container = document.querySelector('.image-wrapper');
+  const container = dragContainer;
   if (!container) return;
 
   const rect = container.getBoundingClientRect();
@@ -117,6 +121,19 @@ function onTouchEnd() {
   window.removeEventListener('touchmove', onTouchMove);
   window.removeEventListener('touchend', onTouchEnd);
 }
+
+// Cleanup window listeners on unmount to prevent memory leaks
+onBeforeUnmount(() => {
+  window.removeEventListener('mousemove', onMouseMove);
+  window.removeEventListener('mouseup', onMouseUp);
+  window.removeEventListener('touchmove', onTouchMove);
+  window.removeEventListener('touchend', onTouchEnd);
+  window.removeEventListener('mousemove', onLabelMouseMove);
+  window.removeEventListener('mouseup', onLabelMouseUp);
+  window.removeEventListener('touchmove', onLabelTouchMove);
+  window.removeEventListener('touchend', onLabelTouchEnd);
+  dragContainer = null;
+});
 
 
 
