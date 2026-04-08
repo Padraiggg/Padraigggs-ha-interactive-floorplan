@@ -27,11 +27,19 @@ const isLoading = ref(false);
 const isPushing = ref(false);
 
 // Dashboard name from card config (user-configurable)
-// Strip "dashboard-xxx/" prefix if user accidentally pastes the full HA browser URL path
-// e.g. "dashboard-bernd/floor" → "floor", "lovelace" → "lovelace", "floor" → "floor"
+// Strip "dashboard-xxx/" prefix ONLY when followed by a "/slug" part —
+// i.e. the user pasted a full HA browser URL path like "dashboard-bernd/floor".
+// If the url_path itself starts with "dashboard-" (e.g. "dashboard-test") it is kept as-is.
+// Examples:
+//   "floor"                  → "floor"       (unchanged)
+//   "dashboard-bernd/floor"  → "floor"       (prefix stripped)
+//   "dashboard-test"         → "dashboard-test" (kept — this IS the url_path)
+//   "lovelace"               → "lovelace"    (unchanged)
 const dashboardId = computed(() => {
     const raw = props.config?.dashboard || 'lovelace';
-    return raw.replace(/^dashboard-[^/]+\//, '');
+    // Only strip if there is a "/" separating a "dashboard-xxx" prefix from a trailing slug
+    const match = raw.match(/^dashboard-[^/]+\/(.+)$/);
+    return match ? match[1] : raw;
 });
 const cardIndex = computed(() => props.config?.card_index ?? null);
 
@@ -62,7 +70,13 @@ function getViewCards(view: any): any[] {
 // Recursively find a ha-floorplan-card inside any card (handles tabbed-card, grid-card, vertical-stack, etc.)
 function findFloorplanConfig(card: any): any | null {
     if (!card) return null;
-    if (card.type === 'custom:ha-floorplan-card' && card.config) return card.config;
+    if (card.type === 'custom:ha-floorplan-card') {
+        // Nested format: { type, config: { id, imageBase64, entities, ... } }
+        if (card.config) return card.config;
+        // Flat format (from getStubConfig or hand-written YAML): config fields live on the card itself
+        const { type, ...configFields } = card;
+        return configFields;
+    }
     // tabbed-card: card.tabs[].card
     if (card.tabs && Array.isArray(card.tabs)) {
         for (const tab of card.tabs) {
@@ -86,8 +100,16 @@ function findFloorplanConfig(card: any): any | null {
 // Returns true if patched.
 function patchFloorplanConfig(card: any, newConfig: any): boolean {
     if (!card) return false;
-    if (card.type === 'custom:ha-floorplan-card' && card.config) {
+    if (card.type === 'custom:ha-floorplan-card') {
+        // Always save in nested format: { type, config: { ... } }
         card.config = newConfig;
+        // Remove stale flat properties that would conflict with the nested config
+        delete card.entities;
+        delete card.imageUrl;
+        delete card.imageBase64;
+        delete card.overlayImages;
+        delete card.id;
+        delete card.name;
         return true;
     }
     if (card.tabs && Array.isArray(card.tabs)) {

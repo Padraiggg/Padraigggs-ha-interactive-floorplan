@@ -36,9 +36,12 @@ class HaFloorplanCardElementWrapped extends HaFloorplanCardElement {
     static getStubConfig() {
         return {
             type: 'custom:ha-floorplan-card',
-            entities: [],
-            imageUrl: '',
-            overlayImages: []
+            config: {
+                id: '',
+                name: 'My Floorplan',
+                imageBase64: '',
+                entities: []
+            }
         };
     }
 
@@ -67,6 +70,12 @@ class HaFloorplanEditorElementWrapped extends HaFloorplanEditorElement {
     setConfig(config: any) {
         // @ts-ignore
         this.config = config;
+    }
+
+    // HA calls setHass() to pass live hass object (needed for lovelace/config WS calls)
+    setHass(hass: any) {
+        // @ts-ignore
+        this.hass = hass;
     }
 
     getCardSize() {
