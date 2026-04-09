@@ -102,13 +102,16 @@ tabs:
 
 #### How to find your dashboard URL path
 
-The `dashboard` value is the **last part of your dashboard's URL**:
+Go to **Settings → Dashboards** and look at the **URL path** column — that's the value to use. Do **not** include view names or subsection slugs.
 
 | Dashboard URL in browser | `dashboard` value to use |
 |--------------------------|--------------------------|
 | `http://homeassistant.local:8123/lovelace/0` | `lovelace` |
-| `http://homeassistant.local:8123/lovelace/floorplan` | `lovelace/floorplan` |
-| `http://homeassistant.local:8123/my-custom-dashboard` | `my-custom-dashboard` |
+| `http://homeassistant.local:8123/lovelace/floorplan` | `lovelace` |
+| `http://homeassistant.local:8123/my-custom-dashboard/0` | `my-custom-dashboard` |
+| `http://homeassistant.local:8123/dashboard-test2/my-subsection` | `dashboard-test2` |
+
+> ⚠️ **Important:** Only use the **dashboard URL path** — never include the view or subsection name after it. For example, if your browser shows `/dashboard-test2/my-view`, use `dashboard-test2`, not `dashboard-test2/my-view`.
 
 For most users the default value `lovelace` is correct.
 
